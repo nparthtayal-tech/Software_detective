@@ -1,0 +1,36 @@
+{
+    "case_id": "CASE-2026-0912",
+    "incident": "Electronics Warehouse Break-in at Okhla Industrial Area Phase-III",
+    "incident_date": "2026-09-12",
+    "incident_timeframe": "01:00 – 03:30",
+    "statements": [
+        {
+            "id": "STMT_01",
+            "speaker_name": "Ramesh Chandra",
+            "speaker_role": "victim",
+            "recorded_at": "2026-09-12T08:15:00+05:30",
+            "statement_text": "I arrived at the warehouse at 7:30 AM to unlock the gates for morning shipments. The padlock on Gate 2 had been cut with heavy bolt cutters. When I opened the roll-up shutter, I saw pallets in aisle 4 torn open. Approximately 80 high-end smartphones and 25 laptops are missing from the secure cages. Total inventory loss is estimated around 45 lakhs."
+        },
+        {
+            "id": "STMT_02",
+            "speaker_name": "Mohan Lal",
+            "speaker_role": "witness",
+            "recorded_at": "2026-09-12T09:40:00+05:30",
+            "statement_text": "I was on duty at the adjacent plastic factory gate from 11 PM to 7 AM. Around 1:45 AM I noticed a white cargo van with dimmed headlights enter the service lane leading to warehouse Gate 2. It remained there for about 40 minutes and drove out towards Mathura Road around 2:30 AM."
+        },
+        {
+            "id": "STMT_03",
+            "speaker_name": "Sanjay Bhatia",
+            "speaker_role": "suspect",
+            "recorded_at": "2026-09-12T15:20:00+05:30",
+            "statement_text": "I used to work loading pallets at that warehouse but I was laid off last month. On the night of September 12, I was at my cousin's house in Faridabad celebrating a family anniversary. I did not visit Okhla and have nothing to do with any stolen electronics."
+        },
+        {
+            "id": "STMT_04",
+            "speaker_name": "Parth",
+            "speaker_role": "witness",
+            "recorded_at": "2026-09-14T17:05:20+05:30",
+            "statement_text": "I crossed at the warehouse at 7:30 AM when someone was unlocking the gates for morning shipments. He opened all the padlock with his keys and then he start to shift things in a truck like a order or something."
+        }
+    ]
+}

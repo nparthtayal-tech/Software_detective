@@ -1,0 +1,36 @@
+{
+    "case_id": "CASE-2026-0824",
+    "incident": "Armed Robbery at Mehta Jewellers, Karol Bagh, New Delhi",
+    "incident_date": "2026-08-23",
+    "incident_timeframe": "20:30 – 22:00",
+    "statements": [
+        {
+            "id": "STMT_01",
+            "speaker_name": "Rajesh Mehta",
+            "speaker_role": "victim",
+            "recorded_at": "2026-08-23T22:30:00+05:30",
+            "statement_text": "I was closing up the store around 9:00 PM. I had just finished locking the back-room safe and was walking toward the front counter. Two men wearing black masks rushed in through the front door. The taller one, maybe 5 foot 10 or 5 foot 11, had a knife — a large kitchen-type knife with a black handle. He grabbed me by the collar and pushed me against the display case. He said 'Don't move or I'll cut you' in Hindi. His voice was deep and he spoke with what sounded like a western UP accent. The shorter one, maybe 5 foot 5, went straight to the center display case and started smashing the glass with a small hammer. I remember the glass shattering — it was incredibly loud, like a car crash. Shards flew everywhere and I felt some cut my left hand. They took about 15 to 20 gold necklaces and a tray of diamond rings from the center display, maybe worth 18 to 20 lakhs total. The whole thing lasted about 4 to 5 minutes. I was terrified — my heart was pounding so hard I thought I might collapse. The taller one kept looking at the door like he was nervous. Then they both ran out through the front door. I saw them get into a dark-colored SUV, it looked black or very dark blue, parked right outside the store. It drove off towards Pusa Road. I stumbled to the phone and called police at about 9:10 PM. My hands were shaking so badly I could barely dial. I don't understand why they targeted my shop — I'm just a small jeweller."
+        },
+        {
+            "id": "STMT_02",
+            "speaker_name": "Sunita Verma",
+            "speaker_role": "witness",
+            "recorded_at": "2026-08-23T23:15:00+05:30",
+            "statement_text": "I run the textile shop right next to Mehta Jewellers. I was doing my end-of-day accounts at my desk near the back wall. Around 8:50 PM, I noticed through my window that a silver sedan, a medium-sized car, parked right in front of the jewelry store. I thought it was odd because that stretch is usually empty after 8:30 PM when the other shops close. The car sat there with its engine idling for maybe 10 minutes. Then around 9:00 PM I heard very loud crashing and banging sounds from next door — like glass breaking. I was scared but I went to my front door and opened it just a crack. I saw one man run out of Mehta Jewellers carrying a dark sports bag. He was medium height, maybe 5 foot 7, wearing all dark clothes and a mask or scarf over his face. He got into the silver car on the passenger side and it sped off immediately. It turned left and drove off towards Ajmal Khan Road, which is the opposite direction from Pusa Road. I only saw one man come out. I did not see a second person at all. After the car left I called Rajesh on his mobile to check if he was okay. He sounded very shaken."
+        },
+        {
+            "id": "STMT_03",
+            "speaker_name": "Amit Kumar",
+            "speaker_role": "witness",
+            "recorded_at": "2026-08-24T09:00:00+05:30",
+            "statement_text": "I work as a security guard at Sunrise Apartments, the residential complex directly across the road from Mehta Jewellers. I was standing at the front gate doing my usual evening round. At approximately 9:05 PM — I know the time because I had just checked my wristwatch to log my patrol — I heard loud glass breaking and what sounded like shouting coming from across the street. I looked over and through the jewelry store's front window I could see two figures moving around inside. The store lights were on so I could see them clearly enough, though I couldn't make out faces because of the distance, maybe 25 to 30 meters. About 2 to 3 minutes later, both men ran out the front door. One was definitely taller than the other. They were both carrying bags. They got into a dark vehicle — I believe it was a dark SUV or a large dark-colored car, I honestly couldn't tell the exact model in the poor streetlighting. The vehicle pulled out and headed towards Pusa Road at high speed. I did not see the license plate. I immediately called the police control room and reported what I saw."
+        },
+        {
+            "id": "STMT_04",
+            "speaker_name": "Vikram Yadav",
+            "speaker_role": "suspect",
+            "recorded_at": "2026-08-24T14:00:00+05:30",
+            "statement_text": "I was nowhere near Karol Bagh that entire evening. I was having dinner with my friend Deepak Sharma at Sharma Dhaba in Rajouri Garden. We got there around 8:00 PM. I remember because the India cricket match had just started on the TV there and we wanted to watch it while eating. We ordered butter chicken, dal makhani, and naan. The food took a while to come — maybe 20 minutes. We ate slowly and watched the match. I think I had two glasses of lassi. We didn't leave until about 10:30 PM because the match went into the last few overs. I paid the bill — I think it was around 1,400 rupees — and I should still have the receipt somewhere. I also paid with my UPI, you can check my payment history. After dinner, Deepak and I walked to the parking lot and I drove straight home to Janakpuri. I drive a white Maruti Swift, not an SUV. I have never been to Mehta Jewellers and I don't even know where exactly it is in Karol Bagh. This is a completely false accusation. You can ask Deepak, you can check the restaurant's CCTV, you can check my phone location — I was not there."
+        }
+    ]
+}

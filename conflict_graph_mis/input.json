@@ -1,0 +1,11 @@
+{
+    "statements": [
+        {"id": "S1", "text": "The meeting happened on Monday."},
+        {"id": "S2", "text": "The meeting happened on Tuesday."},
+        {"id": "S3", "text": "The meeting was held online."},
+        {"id": "S4", "text": "The meeting happened on Monday at 10 AM."}
+    ],
+    "conflicts": [
+        ["S1", "S2"]
+    ]
+}

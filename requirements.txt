@@ -1,0 +1,14 @@
+# ==============================================================================
+# Investigation Intelligence Pipeline — Dependencies
+# Python 3.9+ recommended (uses modern typing annotations)
+# ==============================================================================
+
+# LLM APIs & Environment Management
+google-genai>=1.0.0
+python-dotenv>=1.0.0
+
+# Note:
+# All psychological credibility modules (CBCA, Reality Monitoring),
+# graph algorithms (PageRank, Conflict-Graph MIS, Topological Sort DAG),
+# information theory models (Shannon Entropy), and the interactive GUI server
+# are built using the Python Standard Library with zero additional dependencies.

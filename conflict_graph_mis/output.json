@@ -1,0 +1,12 @@
+{
+    "selected_statements": [
+        "S3",
+        "S4",
+        "S1"
+    ],
+    "rejected_statements": [
+        "S2"
+    ],
+    "size": 3,
+    "algorithm": "Greedy Maximum Independent Set approximation"
+}

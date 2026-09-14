@@ -1,0 +1,11 @@
+{
+    "nodes": ["A", "B", "C", "D"],
+    "edges": [
+        {"source": "A", "target": "B", "weight": 1.0},
+        {"source": "A", "target": "C", "weight": 2.0},
+        {"source": "B", "target": "C", "weight": 1.0},
+        {"source": "C", "target": "D", "weight": 1.0}
+    ],
+    "damping": 0.85,
+    "iterations": 100
+}

@@ -1,0 +1,22 @@
+"""Research-grounded CBCA criterion catalogue."""
+CRITERIA = [
+{"id":1,"key":"logical_structure","name":"Logical structure","category":"general_characteristics","description":"Logical coherence and contextual consistency of the account."},
+{"id":2,"key":"unstructured_production","name":"Unstructured production","category":"general_characteristics","description":"A non-polished, non-rigidly ordered account that remains understandable."},
+{"id":3,"key":"quantity_of_details","name":"Quantity of details","category":"general_characteristics","description":"Richness and amount of concrete detail in the account."},
+{"id":4,"key":"contextual_embedding","name":"Contextual embedding","category":"specific_contents","description":"Embedding of the event in time, place, routine, or surrounding circumstances."},
+{"id":5,"key":"descriptions_of_interactions","name":"Descriptions of interactions","category":"specific_contents","description":"Descriptions of actions and reactions between participants."},
+{"id":6,"key":"reproduction_of_conversation","name":"Reproduction of conversation","category":"specific_contents","description":"Specific reproduction or paraphrase of dialogue or conversation."},
+{"id":7,"key":"unexpected_complications","name":"Unexpected complications during the incident","category":"specific_contents","description":"Unexpected interruptions, difficulties, or complications during the event."},
+{"id":8,"key":"unusual_details","name":"Unusual details","category":"peculiarities_of_content","description":"Distinctive or unusual details associated with the event."},
+{"id":9,"key":"superfluous_details","name":"Superfluous details","category":"peculiarities_of_content","description":"Incidental details not necessary to the central account."},
+{"id":10,"key":"accurately_reported_misunderstood_details","name":"Accurately reported details misunderstood","category":"peculiarities_of_content","description":"Accurate details whose significance is misunderstood by the narrator."},
+{"id":11,"key":"related_external_associations","name":"Related external associations","category":"peculiarities_of_content","description":"References to related people, events, objects, or circumstances outside the core event."},
+{"id":12,"key":"subjective_mental_state","name":"Accounts of subjective mental state","category":"peculiarities_of_content","description":"Descriptions of the narrator's thoughts, feelings, intentions, or perceptions."},
+{"id":13,"key":"attribution_of_others_mental_state","name":"Attribution of another participant's mental state","category":"peculiarities_of_content","description":"Descriptions or attributions of another participant's thoughts, feelings, intentions, or state."},
+{"id":14,"key":"spontaneous_corrections","name":"Spontaneous corrections","category":"motivation_related_contents","description":"Unprompted corrections or amendments to the account."},
+{"id":15,"key":"admitting_lack_of_memory","name":"Admitting lack of memory","category":"motivation_related_contents","description":"Explicit acknowledgement that part of the event cannot be remembered."},
+{"id":16,"key":"raising_doubts_about_own_testimony","name":"Raising doubts about one's own testimony","category":"motivation_related_contents","description":"Voluntary uncertainty or doubt about the accuracy of one's own account."},
+{"id":17,"key":"self_deprecation","name":"Self-deprecation","category":"motivation_related_contents","description":"Statements that place the narrator in an unfavorable or self-critical light."},
+{"id":18,"key":"pardoning_other_participant","name":"Pardoning another participant","category":"motivation_related_contents","description":"Statements that excuse, forgive, or reduce blame assigned to another participant."},
+{"id":19,"key":"offense_specific_elements","name":"Offense/event-specific elements","category":"offense_specific_elements","description":"Details characteristic of the particular event or offense under examination."},
+]
