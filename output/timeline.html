@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timeline — CASE-2026-0912</title>
+<meta name="description" content="Interactive investigation timeline with graph theory analysis for CASE-2026-0912">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #06080f;
+  --bg-secondary: #0c1220;
+  --bg-card: rgba(14, 22, 40, 0.75);
+  --bg-card-hover: rgba(20, 30, 55, 0.85);
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --text-primary: #e8ecf4;
+  --text-secondary: #8b95a8;
+  --text-muted: #5a6478;
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  --accent-cyan: #06b6d4;
+  --green: #10b981;
+  --red: #ef4444;
+  --amber: #f59e0b;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.35);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59,130,246,0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(139,92,246,0.06), transparent);
+}
+
+#app {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+/* ─── Header ─── */
+.header {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 28px;
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple), var(--accent-cyan));
+}
+.header h1 {
+  font-size: 24px; font-weight: 800;
+  background: linear-gradient(135deg, #fff 30%, var(--accent-blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 4px;
+}
+.header .case-id {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--accent-blue); letter-spacing: 0.5px;
+}
+
+/* ─── Legend ─── */
+.legend {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  margin-bottom: 24px; padding: 16px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(20px);
+}
+.legend-title {
+  font-size: 12px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 1px;
+  width: 100%; margin-bottom: 4px;
+}
+.legend-item {
+  display: flex; align-items: center; gap: 8px; font-size: 13px;
+}
+.legend-dot {
+  width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
+}
+.legend-name { color: var(--text-primary); font-weight: 500; }
+.legend-role {
+  color: var(--text-muted); font-size: 11px;
+  background: rgba(255,255,255,0.04); padding: 2px 8px;
+  border-radius: 20px; border: 1px solid var(--border);
+}
+
+/* ─── Status Legend ─── */
+.status-legend {
+  display: flex; gap: 24px; flex-wrap: wrap;
+  margin-bottom: 24px; padding: 14px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(20px);
+  font-size: 12px; color: var(--text-secondary);
+}
+.status-item {
+  display: flex; align-items: center; gap: 8px;
+}
+.status-line {
+  width: 28px; height: 0; border-top: 2.5px solid var(--text-secondary);
+}
+.status-line.dashed { border-top-style: dashed; }
+.status-line.dotted { border-top-style: dotted; }
+.status-line.conflict { border-color: var(--red); border-top-style: dashed; }
+.status-line.corrob { border-color: var(--green); }
+
+/* ─── Timeline container ─── */
+.timeline-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 20px;
+  overflow-x: auto;
+  backdrop-filter: blur(20px);
+  position: relative;
+}
+
+/* ─── Tooltip ─── */
+#tooltip {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  background: rgba(10, 16, 30, 0.96);
+  border: 1px solid var(--border-hover);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  min-width: 280px;
+  max-width: 380px;
+  backdrop-filter: blur(24px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  pointer-events: none;
+  animation: tooltipIn 0.15s ease-out;
+}
+@keyframes tooltipIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+#tooltip .tt-speaker {
+  font-size: 15px; font-weight: 700; margin-bottom: 2px;
+}
+#tooltip .tt-role {
+  font-size: 11px; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+#tooltip .tt-desc {
+  font-size: 13px; font-weight: 500; color: var(--text-primary);
+  margin-bottom: 8px;
+}
+#tooltip .tt-row {
+  display: flex; gap: 8px; font-size: 12px; color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+#tooltip .tt-label {
+  color: var(--text-muted); min-width: 70px; font-weight: 500;
+}
+#tooltip .tt-conflict {
+  font-size: 11px; color: var(--red); margin-top: 8px;
+  padding: 6px 10px; background: rgba(239,68,68,0.08);
+  border-radius: 6px; border-left: 3px solid var(--red);
+}
+#tooltip .tt-corrob {
+  font-size: 11px; color: var(--green); margin-top: 6px;
+  padding: 6px 10px; background: rgba(16,185,129,0.08);
+  border-radius: 6px; border-left: 3px solid var(--green);
+}
+#tooltip .tt-badge {
+  display: inline-block; font-size: 10px; padding: 2px 8px;
+  border-radius: 20px; font-weight: 600; margin-top: 8px;
+}
+#tooltip .tt-badge.in-set {
+  background: rgba(16,185,129,0.12); color: var(--green);
+  border: 1px solid rgba(16,185,129,0.25);
+}
+#tooltip .tt-badge.not-in-set {
+  background: rgba(239,68,68,0.12); color: var(--red);
+  border: 1px solid rgba(239,68,68,0.25);
+}
+
+/* ─── Hover effects ─── */
+.event-group:hover .event-circle {
+  filter: url(#glow) brightness(1.3);
+  transition: filter 0.2s;
+}
+.event-circle { transition: filter 0.2s ease; }
+
+/* ─── Header Layout & Nav ─── */
+.header {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 32px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.header::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple), var(--accent-cyan));
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.btn-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.btn-nav:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+.btn-nav-primary {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 10px rgba(59,130,246,0.3);
+}
+.btn-nav-primary:hover {
+  box-shadow: 0 4px 16px rgba(59,130,246,0.5);
+}
+.sync-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(16,185,129,0.1);
+  color: #10b981;
+  border: 1px solid rgba(16,185,129,0.25);
+  font-family: 'JetBrains Mono', monospace;
+}
+.sync-indicator .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+/* ─── Graph Info Cards ─── */
+.info-cards {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px; margin-top: 28px;
+}
+.info-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  backdrop-filter: blur(20px);
+}
+.info-card .card-title {
+  font-size: 11px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+}
+.info-card .card-value {
+  font-size: 28px; font-weight: 800;
+  background: linear-gradient(135deg, #fff 30%, var(--accent-blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.info-card .card-sub {
+  font-size: 12px; color: var(--text-secondary); margin-top: 4px;
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- Header with Coordinated Controls -->
+  <div class="header">
+    <div>
+      <div class="case-id">CASE-2026-0912</div>
+      <h1 id="page-title">🔍 Electronics Warehouse Break-in at Okhla Industrial Area Phase-III</h1>
+    </div>
+    <div class="header-actions">
+      <div class="sync-indicator" id="sync-pill"><span class="dot"></span> Coordinated Tab</div>
+      <button class="btn-nav" onclick="location.reload()" title="Refresh Timeline data">🔄 Refresh</button>
+      <a href="/" class="btn-nav btn-nav-primary" title="Open Case Input Form">📝 Case Input</a>
+      <a href="/output/report.html" class="btn-nav" target="_blank" title="View Full Report">📋 Report</a>
+    </div>
+  </div>
+
+  <!-- Speaker Legend -->
+  <div class="legend">
+    <div class="legend-title">Speakers</div>
+    
+        <div class="legend-item">
+          <span class="legend-dot" style="background:#3b82f6;box-shadow:0 0 8px #3b82f655;"></span>
+          <span class="legend-name">Mohan Lal</span>
+          <span class="legend-role">witness</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot" style="background:#f59e0b;box-shadow:0 0 8px #f59e0b55;"></span>
+          <span class="legend-name">Ramesh Chandra</span>
+          <span class="legend-role">victim</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot" style="background:#10b981;box-shadow:0 0 8px #10b98155;"></span>
+          <span class="legend-name">Parth</span>
+          <span class="legend-role">witness</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot" style="background:#ef4444;box-shadow:0 0 8px #ef444455;"></span>
+          <span class="legend-name">Sanjay Bhatia</span>
+          <span class="legend-role">suspect</span>
+        </div>
+  </div>
+
+  <!-- Status Legend -->
+  <div class="status-legend">
+    <div class="status-item">
+      <div class="status-line"></div> Corroborated
+    </div>
+    <div class="status-item">
+      <div class="status-line dashed"></div> Contested
+    </div>
+    <div class="status-item">
+      <div class="status-line dotted"></div> Single Source
+    </div>
+    <div class="status-item">
+      <div class="status-line conflict"></div> Conflict Arc
+    </div>
+    <div class="status-item">
+      <div class="status-line corrob"></div> Corroboration Arc
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="timeline-container" id="timeline-container">
+    
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="720"
+     id="timeline-svg" style="display:block;">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="axisGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.1"/>
+      <stop offset="50%" stop-color="#8b5cf6" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="stemGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="currentColor" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="currentColor" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+
+
+  <!-- Horizontal timeline axis -->
+  <line x1="40" y1="420" x2="1880" y2="420"
+        stroke="url(#axisGrad)" stroke-width="3" stroke-linecap="round"/>
+  <line x1="40" y1="420" x2="1880" y2="420"
+        stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+
+  <!-- Conflict arc: STMT_01.E2 ↔ STMT_04.E2 -->
+  <path d="M 660 428 Q 840.0 520 1020 428"
+        fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="6 4"
+        opacity="0.55" class="conflict-arc">
+    <title>⚠ CONFLICT: Ramesh states the padlock on Gate 2 was cut with heavy bolt cutters, whereas Parth claims the person opened all padlocks with keys.</title>
+  </path>
+
+
+  <!-- Conflict arc: STMT_01.E3 ↔ STMT_04.E3 -->
+  <path d="M 1200 428 Q 1290.0 500 1380 428"
+        fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="6 4"
+        opacity="0.55" class="conflict-arc">
+    <title>⚠ CONFLICT: Ramesh claims he found the warehouse broken into and inventory stolen upon opening, while Parth claims he saw someone routinely shifting things into a truck.</title>
+  </path>
+
+
+  <!-- Corroboration arc: STMT_01.E1 ↔ STMT_04.E1 -->
+  <path d="M 480 186 Q 660.0 100 840 186"
+        fill="none" stroke="#10b981" stroke-width="2" opacity="0.73"
+        class="corroboration-arc">
+    <title>✓ CORROBORATION (w=0.85): Both Ramesh and Parth state that someone was at the warehouse gate around 7:30 AM to unlock it for morning shipments.</title>
+  </path>
+
+
+  <!-- Event: STMT_02.E2 -->
+  <g class="event-group" data-id="STMT_02.E2" style="cursor:pointer;">
+    <!-- Stem -->
+    <line x1="120" y1="420" x2="120" y2="181"
+          stroke="#3b82f6" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
+    <!-- Tick on axis -->
+    <line x1="120" y1="414" x2="120" y2="426"
+          stroke="#3b82f6" stroke-width="2.5" opacity="0.7"/>
+    <!-- Circle -->
+    <circle cx="120" cy="160" r="17" fill="#3b82f6" fill-opacity="0.15"
+            stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="2 2" filter="url(#glow)"
+            class="event-circle"/>
+    <!-- Inner dot -->
+    <circle cx="120" cy="160" r="4" fill="#3b82f6" opacity="0.9"/>
+    <!-- Time label below axis -->
+    <text x="120" y="448" text-anchor="middle"
+          font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
+      01:45
+    </text>
+    <!-- Description label above circle -->
+    <text x="120" y="133" text-anchor="middle"
+          font-size="11" fill="#e8ecf4" font-weight="500"
+          font-family="Inter, system-ui, sans-serif">
+      Cargo van enters servi
+    </text>
+  </g>
+
+
+  <!-- Event: STMT_02.E3 -->
+  <g class="event-group" data-id="STMT_02.E3" style="cursor:pointer;">
+    <!-- Stem -->
+    <line x1="300" y1="420" x2="300" y2="211"
+          stroke="#3b82f6" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
+    <!-- Tick on axis -->
+    <line x1="300" y1="414" x2="300" y2="426"
+          stroke="#3b82f6" stroke-width="2.5" opacity="0.7"/>
+    <!-- Circle -->
+    <circle cx="300" cy="190" r="17" fill="#3b82f6" fill-opacity="0.15"
+            stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="2 2" filter="url(#glow)"
+            class="event-circle"/>
+    <!-- Inner dot -->
+    <circle cx="300" cy="190" r="4" fill="#3b82f6" opacity="0.9"/>
+    <!-- Time label below axis -->
+    <text x="300" y="448" text-anchor="middle"
+          font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
+      02:25
+    </text>
+    <!-- Description label above circle -->
+    <text x="300" y="163" text-anchor="middle"
+          font-size="11" fill="#e8ecf4" font-weight="500"
+          font-family="Inter, system-ui, sans-serif">
+      Cargo van departs ware
+    </text>
+  </g>
+
+
+  <!-- Event: STMT_01.E1 -->
+  <g class="event-group" data-id="STMT_01.E1" style="cursor:pointer;">
+    <!-- Stem -->
+    <line x1="480" y1="420" x2="480" y2="252"
+          stroke="#f59e0b" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
+    <!-- Tick on axis -->
+    <line x1="480" y1="414" x2="480" y2="426"
+          stroke="#f59e0b" stroke-width="2.5" opacity="0.7"/>
+    <!-- Circle -->
+    <circle cx="480" cy="220" r="28" fill="#f59e0b" fill-opacity="0.15"
+            stroke="#f59e0b" stroke-width="2.5"  filter="url(#glow)"
+            class="event-circle"/>
+    <!-- Inner dot -->
+    <circle cx="480" cy="220" r="4" fill="#f59e0b" opacity="0.9"/>
+    <!-- Time label below axis -->
+    <text x="480" y="448" text-anchor="middle"
+          font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
+      07:30
+    </text>
+    <!-- Description label above circle -->
+    <text x="480" y="182" text-anchor="middle"
+          font-size="11" fill="#e8ecf4" font-weight="500"
+          font-family="Inter, system-ui, sans-serif">
+      Ramesh arrives at ware
+    </text>
+  </g>
+
+
+  <!-- Event: STMT_01.E2 -->
+  <g class="event-group" data-id="STMT_01.E2" style="cursor:pointer;">
+    <!-- Stem -->
+    <line x1="660" y1="420" x2="660" y2="181"
+          stroke="#f59e0b" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
+    <!-- Tick on axis -->
+    <line x1="660" y1="414" x2="660" y2="426"
+          stroke="#f59e0b" stroke-width="2.5" opacity="0.7"/>
+    <!-- Circle -->
+    <circle cx="660" cy="160" r="17" fill="#f59e0b" fill-opacity="0.15"
+            stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="5 3" filter="url(#glow)"
+            class="event-circle"/>
+    <!-- Inner dot -->
+    <circle cx="660" cy="160" r="4" fill="#f59e0b" opacity="0.9"/>
+    <!-- Time label below axis -->
+    <text x="660" y="448" text-anchor="middle"
+          font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
+      07:30
+    </text>
+    <!-- Description label above circle -->
+    <text x="660" y="133" text-anchor="middle"
+          font-size="11" fill="#e8ecf4" font-weight="500"
+          font-family="Inter, system-ui, sans-serif">
+      Ramesh discovers cut p
+    </text>
+  </g>
+
+
+  <!-- Event: STMT_04.E1 -->
+  <g class="event-group" data-id="STMT_04.E1" style="cursor:pointer;">
+    <!-- Stem -->
+    <line x1="840" y1="420" x2="840" y2="222"
+          stroke="#10b981" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
+    <!-- Tick on axis -->
+    <line x1="840" y1="414" x2="840" y2="426"
+          stroke="#10b981" stroke-width="2.5" opacity="0.7"/>
+    <!-- Circle -->
+    <circle cx="840" cy="190" r="28" fill="#10b981" fill-opacity="0.15"
+            stroke="#10b981" stroke-width="2.5"  filter="url(#glow)"
+            class="event-circle"/>
+    <!-- Inner dot -->
+    <circle cx="840" cy="190" r="4" fill="#10b981" opacity="0.9"/>
+    <!-- Time label below axis -->
+    <text x="840" y="448" text-anchor="middle"
+          font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
+      07:30
+    </text>
+    <!-- Description label above circle -->
+    <text x="840" y="152" text-anchor="middle"
+          font-size="11" fill="#e8ecf4" font-weight="500"
+          font-family="Inter, system-ui, sans-serif">
+      Parth walks past wareh
+    </text>
+  </g>
+
+
+  <!-- Event: STMT_04.E2 -->
+  <g class="event-group" data-id="STMT_04.E2" style="cursor:pointer;">
+    <!-- Stem -->
+    <line x1="1020" y1="420" x2="1020" y2="241"
+          stroke="#10b981" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
+    <!-- Tick on axis -->
+    <line x1="1020" y1="414" x2="1020" y2="426"
+          stroke="#10b981" stroke-width="2.5" opacity="0.7"/>
+    <!-- Circle -->
+    <circle cx="1020" cy="220" r="17" fill="#10b981" fill-opacity="0.15"
+            stroke="#10b981" stroke-width="2.5" stroke-dasharray="5 3" filter="url(#glow)"
+            class="event-circle"/>
+    <!-- Inner dot -->
+    <circle cx="1020" cy="220" r="4" fill="#10b981" opacity="0.9"/>
+    <!-- Time label below axis -->
+    <text x="1020" y="448" text-anchor="middle"
+          font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
+      07:30
+    </text>
+    <!-- Description label above circle -->
+    <text x="1020" y="193" text-anchor="middle"
+          font-size="11" fill="#e8ecf4" font-weight="500"
+          font-family="Inter, system-ui, sans-serif">
+      Person unlocks padlock
+    </text>
+  </g>
+
+
+  <!-- Event: STMT_01.E3 -->
+  <g class="event-group" data-id="STMT_01.E3" style="cursor:pointer;">
+    <!-- Stem -->
+    <line x1="1200" y1="420" x2="1200" y2="181"
+          stroke="#f59e0b" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
+    <!-- Tick on axis -->
+    <line x1="1200" y1="414" x2="1200" y2="426"
+          stroke="#f59e0b" stroke-width="2.5" opacity="0.7"/>
+    <!-- Circle -->
+    <circle cx="1200" cy="160" r="17" fill="#f59e0b" fill-opacity="0.15"
+            stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="5 3" filter="url(#glow)"
+            class="event-circle"/>
+    <!-- Inner dot -->
+    <circle cx="1200" cy="160" r="4" fill="#f59e0b" opacity="0.9"/>
+    <!-- Time label below axis -->
+    <text x="1200" y="448" text-anchor="middle"
+          font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
+      07:32
+    </text>
+    <!-- Description label above circle -->
+    <text x="1200" y="133" text-anchor="middle"
+          font-size="11" fill="#e8ecf4" font-weight="500"
+          font-family="Inter, system-ui, sans-serif">
+      Ramesh discovers inven
+    </text>
+  </g>
+
+
+  <!-- Event: STMT_04.E3 -->
+  <g class="event-group" data-id="STMT_04.E3" style="cursor:pointer;">
+    <!-- Stem -->
+    <line x1="1380" y1="420" x2="1380" y2="211"
+          stroke="#10b981" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
+    <!-- Tick on axis -->
+    <line x1="1380" y1="414" x2="1380" y2="426"
+          stroke="#10b981" stroke-width="2.5" opacity="0.7"/>
+    <!-- Circle -->
+    <circle cx="1380" cy="190" r="17" fill="#10b981" fill-opacity="0.15"
+            stroke="#10b981" stroke-width="2.5" stroke-dasharray="5 3" filter="url(#glow)"
+            class="event-circle"/>
+    <!-- Inner dot -->
+    <circle cx="1380" cy="190" r="4" fill="#10b981" opacity="0.9"/>
+    <!-- Time label below axis -->
+    <text x="1380" y="448" text-anchor="middle"
+          font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
+      07:32
+    </text>
+    <!-- Description label above circle -->
+    <text x="1380" y="163" text-anchor="middle"
+          font-size="11" fill="#e8ecf4" font-weight="500"
+          font-family="Inter, system-ui, sans-serif">
+      Person shifts items in
+    </text>
+  </g>
+
+
+  <!-- Event: STMT_03.E1 -->
+  <g class="event-group" data-id="STMT_03.E1" style="cursor:pointer;">
+    <!-- Stem -->
+    <line x1="1560" y1="420" x2="1560" y2="241"
+          stroke="#ef4444" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
+    <!-- Tick on axis -->
+    <line x1="1560" y1="414" x2="1560" y2="426"
+          stroke="#ef4444" stroke-width="2.5" opacity="0.7"/>
+    <!-- Circle -->
+    <circle cx="1560" cy="220" r="17" fill="#ef4444" fill-opacity="0.15"
+            stroke="#ef4444" stroke-width="2.5" stroke-dasharray="2 2" filter="url(#glow)"
+            class="event-circle"/>
+    <!-- Inner dot -->
+    <circle cx="1560" cy="220" r="4" fill="#ef4444" opacity="0.9"/>
+    <!-- Time label below axis -->
+    <text x="1560" y="448" text-anchor="middle"
+          font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
+      20:00
+    </text>
+    <!-- Description label above circle -->
+    <text x="1560" y="193" text-anchor="middle"
+          font-size="11" fill="#e8ecf4" font-weight="500"
+          font-family="Inter, system-ui, sans-serif">
+      Sanjay attends anniver
+    </text>
+  </g>
+
+
+  <!-- Event: STMT_02.E1 -->
+  <g class="event-group" data-id="STMT_02.E1" style="cursor:pointer;">
+    <!-- Stem -->
+    <line x1="1740" y1="420" x2="1740" y2="181"
+          stroke="#3b82f6" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
+    <!-- Tick on axis -->
+    <line x1="1740" y1="414" x2="1740" y2="426"
+          stroke="#3b82f6" stroke-width="2.5" opacity="0.7"/>
+    <!-- Circle -->
+    <circle cx="1740" cy="160" r="17" fill="#3b82f6" fill-opacity="0.15"
+            stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="2 2" filter="url(#glow)"
+            class="event-circle"/>
+    <!-- Inner dot -->
+    <circle cx="1740" cy="160" r="4" fill="#3b82f6" opacity="0.9"/>
+    <!-- Time label below axis -->
+    <text x="1740" y="448" text-anchor="middle"
+          font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
+      23:00
+    </text>
+    <!-- Description label above circle -->
+    <text x="1740" y="133" text-anchor="middle"
+          font-size="11" fill="#e8ecf4" font-weight="500"
+          font-family="Inter, system-ui, sans-serif">
+      Mohan starts factory g
+    </text>
+  </g>
+
+</svg>
+  </div>
+
+  <!-- Info Cards -->
+  <div class="info-cards">
+    <div class="info-card">
+      <div class="card-title">Total Events</div>
+      <div class="card-value">10</div>
+      <div class="card-sub">Across 4 speakers</div>
+    </div>
+    <div class="info-card">
+      <div class="card-title">Conflicts Detected</div>
+      <div class="card-value" style="-webkit-text-fill-color:var(--red);">2</div>
+      <div class="card-sub">Cross-statement contradictions</div>
+    </div>
+    <div class="info-card">
+      <div class="card-title">Corroborations</div>
+      <div class="card-value" style="-webkit-text-fill-color:var(--green);">1</div>
+      <div class="card-sub">Cross-statement agreements</div>
+    </div>
+    <div class="info-card">
+      <div class="card-title">Consistent Set (MIS)</div>
+      <div class="card-value">8</div>
+      <div class="card-sub">Conflict-free events</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Tooltip element -->
+<div id="tooltip"></div>
+
+<script>
+// Tooltip data injected from Python.
+const tooltipData = {"STMT_02.E2": {"speaker": "Mohan Lal", "role": "witness", "description": "Cargo van enters service lane", "time": "01:45 – 01:45", "location": "Service lane leading to Gate 2", "action": "Entered service lane with dimmed headlights", "status": "single_source", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": [], "corroborations": []}, "STMT_02.E3": {"speaker": "Mohan Lal", "role": "witness", "description": "Cargo van departs warehouse area", "time": "02:25 – 02:30", "location": "Towards Mathura Road", "action": "Drove out towards Mathura Road after ~40 mins", "status": "single_source", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": [], "corroborations": []}, "STMT_01.E1": {"speaker": "Ramesh Chandra", "role": "victim", "description": "Ramesh arrives at warehouse", "time": "07:30 – 07:30", "location": "Warehouse", "action": "Arrived to unlock gates for shipments", "status": "corroborated", "in_consistent_set": true, "pagerank": 0.3125, "conflicts": [], "corroborations": ["Both Ramesh and Parth state that someone was at the warehouse gate around 7:30 AM to unlock it for morning shipments."]}, "STMT_01.E2": {"speaker": "Ramesh Chandra", "role": "victim", "description": "Ramesh discovers cut padlock", "time": "07:30 – 07:32", "location": "Gate 2", "action": "Found Gate 2 padlock cut with bolt cutters", "status": "contested", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": ["Ramesh states the padlock on Gate 2 was cut with heavy bolt cutters, whereas Parth claims the person opened all padlocks with keys."], "corroborations": []}, "STMT_04.E1": {"speaker": "Parth", "role": "witness", "description": "Parth walks past warehouse", "time": "07:30 – 07:30", "location": "Warehouse exterior", "action": "Crossed past the warehouse", "status": "corroborated", "in_consistent_set": true, "pagerank": 0.3125, "conflicts": [], "corroborations": ["Both Ramesh and Parth state that someone was at the warehouse gate around 7:30 AM to unlock it for morning shipments."]}, "STMT_04.E2": {"speaker": "Parth", "role": "witness", "description": "Person unlocks padlocks with keys", "time": "07:30 – 07:32", "location": "Warehouse gates", "action": "Opened all padlocks using keys", "status": "contested", "in_consistent_set": false, "pagerank": 0.0469, "conflicts": ["Ramesh states the padlock on Gate 2 was cut with heavy bolt cutters, whereas Parth claims the person opened all padlocks with keys."], "corroborations": []}, "STMT_01.E3": {"speaker": "Ramesh Chandra", "role": "victim", "description": "Ramesh discovers inventory theft", "time": "07:32 – 07:35", "location": "Aisle 4 / Secure cages", "action": "Opened shutter and found missing inventory", "status": "contested", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": ["Ramesh claims he found the warehouse broken into and inventory stolen upon opening, while Parth claims he saw someone routinely shifting things into a truck."], "corroborations": []}, "STMT_04.E3": {"speaker": "Parth", "role": "witness", "description": "Person shifts items into truck", "time": "07:32 – 07:40", "location": "Warehouse gates", "action": "Started shifting items into a truck", "status": "contested", "in_consistent_set": false, "pagerank": 0.0469, "conflicts": ["Ramesh claims he found the warehouse broken into and inventory stolen upon opening, while Parth claims he saw someone routinely shifting things into a truck."], "corroborations": []}, "STMT_03.E1": {"speaker": "Sanjay Bhatia", "role": "suspect", "description": "Sanjay attends anniversary in Faridabad", "time": "20:00 – 04:00", "location": "Cousin's house in Faridabad", "action": "Celebrated a family anniversary", "status": "single_source", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": [], "corroborations": []}, "STMT_02.E1": {"speaker": "Mohan Lal", "role": "witness", "description": "Mohan starts factory gate duty", "time": "23:00 – 07:00", "location": "Adjacent plastic factory gate", "action": "On duty at adjacent plastic factory gate", "status": "single_source", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": [], "corroborations": []}};
+
+const tooltip = document.getElementById('tooltip');
+const groups = document.querySelectorAll('.event-group');
+
+groups.forEach(g => {
+  g.addEventListener('mouseenter', (e) => {
+    const id = g.getAttribute('data-id');
+    const d = tooltipData[id];
+    if (!d) return;
+
+    let html = `<div class="tt-speaker" style="color:${getColour(d.speaker)}">${d.speaker}</div>`;
+    html += `<div class="tt-role">${d.role}</div>`;
+    html += `<div class="tt-desc">${d.description}</div>`;
+    html += `<div class="tt-row"><span class="tt-label">Time</span>${d.time}</div>`;
+    html += `<div class="tt-row"><span class="tt-label">Location</span>${d.location || '—'}</div>`;
+    html += `<div class="tt-row"><span class="tt-label">Action</span>${d.action || '—'}</div>`;
+    html += `<div class="tt-row"><span class="tt-label">Status</span>${d.status.replace(/_/g, ' ')}</div>`;
+    html += `<div class="tt-row"><span class="tt-label">PageRank</span>${d.pagerank.toFixed(4)}</div>`;
+
+    if (d.conflicts && d.conflicts.length) {
+      d.conflicts.forEach(c => {
+        html += `<div class="tt-conflict">⚠ ${c}</div>`;
+      });
+    }
+    if (d.corroborations && d.corroborations.length) {
+      d.corroborations.forEach(c => {
+        html += `<div class="tt-corrob">✓ ${c}</div>`;
+      });
+    }
+
+    html += d.in_consistent_set
+      ? `<span class="tt-badge in-set">✓ In Consistent Set</span>`
+      : `<span class="tt-badge not-in-set">✗ Excluded by MIS</span>`;
+
+    tooltip.innerHTML = html;
+    tooltip.style.display = 'block';
+  });
+
+  g.addEventListener('mousemove', (e) => {
+    const pad = 16;
+    let x = e.clientX + pad;
+    let y = e.clientY + pad;
+    const rect = tooltip.getBoundingClientRect();
+    if (x + rect.width > window.innerWidth - pad) x = e.clientX - rect.width - pad;
+    if (y + rect.height > window.innerHeight - pad) y = e.clientY - rect.height - pad;
+    tooltip.style.left = x + 'px';
+    tooltip.style.top = y + 'px';
+  });
+
+  g.addEventListener('mouseleave', () => {
+    tooltip.style.display = 'none';
+  });
+});
+
+// Speaker colour map (must match Python).
+const speakerColours = {"Mohan Lal": "#3b82f6", "Ramesh Chandra": "#f59e0b", "Parth": "#10b981", "Sanjay Bhatia": "#ef4444"};
+
+function getColour(name) {
+  return speakerColours[name] || '#888';
+}
+
+// ─── Cross-Tab Live Coordination with Case Input Form ───
+function showUpdateNotification() {
+  let notif = document.getElementById('live-update-toast');
+  if (!notif) {
+    notif = document.createElement('div');
+    notif.id = 'live-update-toast';
+    notif.style.cssText = 'position:fixed;top:24px;right:24px;z-index:99999;background:rgba(12,20,36,0.95);border:1px solid #10b981;color:#fff;padding:14px 20px;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.6);display:flex;align-items:center;gap:14px;backdrop-filter:blur(16px);font-size:13px;font-family:Inter,sans-serif;';
+    notif.innerHTML = `
+      <span style="display:flex;align-items:center;gap:8px;font-weight:600;color:#10b981;">
+        <span style="font-size:18px;">⚡</span> Pipeline updated! New timeline ready.
+      </span>
+      <button onclick="location.reload()" style="background:#10b981;color:#fff;border:none;padding:6px 14px;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px;">Reload Now</button>
+      <button onclick="this.parentElement.remove()" style="background:transparent;border:none;color:#8b95a8;cursor:pointer;font-size:16px;">✕</button>
+    `;
+    document.body.appendChild(notif);
+  }
+}
+
+const syncChannel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('investigation_channel') : null;
+if (syncChannel) {
+  syncChannel.onmessage = (e) => {
+    if (e.data && (e.data.type === 'PIPELINE_COMPLETE' || e.data.type === 'CASE_SAVED')) {
+      showUpdateNotification();
+    }
+  };
+}
+window.addEventListener('storage', (e) => {
+  if (e.key === 'investigation_last_run' || e.key === 'investigation_case_saved') {
+    showUpdateNotification();
+  }
+});
+</script>
+</body>
+</html>

@@ -78,6 +78,10 @@ htmlcov/
 *.pid
 
 # --- Investigation Run Outputs ---
-# Keep output directory structure via .gitkeep while ignoring generated run artifacts
-output/*
+# Ignore large generated JSON case results, but track HTML reports and .gitkeep
+output/*.json
+output/*.log
+output/*.tmp
+!output/*.html
 !output/.gitkeep
+
