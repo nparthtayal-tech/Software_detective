@@ -398,27 +398,27 @@ body {
         stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
 
 
-  <!-- Conflict arc: STMT_01.E2 ↔ STMT_04.E2 -->
-  <path d="M 660 428 Q 840.0 520 1020 428"
+  <!-- Conflict arc: STMT_01.E2 ↔ STMT_05.E1 -->
+  <path d="M 840 428 Q 930.0 500 1020 428"
         fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="6 4"
         opacity="0.55" class="conflict-arc">
-    <title>⚠ CONFLICT: Ramesh states the padlock on Gate 2 was cut with heavy bolt cutters, whereas Parth claims the person opened all padlocks with keys.</title>
+    <title>⚠ CONFLICT: Ramesh states the padlock on Gate 2 was cut with bolt cutters, whereas Parth claims someone opened all padlocks with keys.</title>
   </path>
 
 
-  <!-- Conflict arc: STMT_01.E3 ↔ STMT_04.E3 -->
-  <path d="M 1200 428 Q 1290.0 500 1380 428"
+  <!-- Conflict arc: STMT_01.E3 ↔ STMT_05.E2 -->
+  <path d="M 1380 428 Q 1290.0 500 1200 428"
         fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="6 4"
         opacity="0.55" class="conflict-arc">
-    <title>⚠ CONFLICT: Ramesh claims he found the warehouse broken into and inventory stolen upon opening, while Parth claims he saw someone routinely shifting things into a truck.</title>
+    <title>⚠ CONFLICT: Ramesh discovered the break-in and missing stock after opening the shutter at 7:30 AM, whereas Parth reports seeing someone loading goods into a truck at 7:30 AM.</title>
   </path>
 
 
-  <!-- Corroboration arc: STMT_01.E1 ↔ STMT_04.E1 -->
-  <path d="M 480 186 Q 660.0 100 840 186"
+  <!-- Corroboration arc: STMT_01.E1 ↔ STMT_05.E1 -->
+  <path d="M 660 186 Q 840.0 100 1020 186"
         fill="none" stroke="#10b981" stroke-width="2" opacity="0.73"
         class="corroboration-arc">
-    <title>✓ CORROBORATION (w=0.85): Both Ramesh and Parth state that someone was at the warehouse gate around 7:30 AM to unlock it for morning shipments.</title>
+    <title>✓ CORROBORATION (w=0.85): Both statements confirm that activity occurred at the warehouse gates around 7:30 AM involving unlocking for morning shipments.</title>
   </path>
 
 
@@ -445,7 +445,7 @@ body {
     <text x="120" y="133" text-anchor="middle"
           font-size="11" fill="#e8ecf4" font-weight="500"
           font-family="Inter, system-ui, sans-serif">
-      Cargo van enters servi
+      Observed white van ent
     </text>
   </g>
 
@@ -467,13 +467,41 @@ body {
     <!-- Time label below axis -->
     <text x="300" y="448" text-anchor="middle"
           font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
-      02:25
+      01:45
     </text>
     <!-- Description label above circle -->
     <text x="300" y="163" text-anchor="middle"
           font-size="11" fill="#e8ecf4" font-weight="500"
           font-family="Inter, system-ui, sans-serif">
-      Cargo van departs ware
+      Van stayed parked near
+    </text>
+  </g>
+
+
+  <!-- Event: STMT_02.E4 -->
+  <g class="event-group" data-id="STMT_02.E4" style="cursor:pointer;">
+    <!-- Stem -->
+    <line x1="480" y1="420" x2="480" y2="241"
+          stroke="#3b82f6" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
+    <!-- Tick on axis -->
+    <line x1="480" y1="414" x2="480" y2="426"
+          stroke="#3b82f6" stroke-width="2.5" opacity="0.7"/>
+    <!-- Circle -->
+    <circle cx="480" cy="220" r="17" fill="#3b82f6" fill-opacity="0.15"
+            stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="2 2" filter="url(#glow)"
+            class="event-circle"/>
+    <!-- Inner dot -->
+    <circle cx="480" cy="220" r="4" fill="#3b82f6" opacity="0.9"/>
+    <!-- Time label below axis -->
+    <text x="480" y="448" text-anchor="middle"
+          font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
+      02:30
+    </text>
+    <!-- Description label above circle -->
+    <text x="480" y="193" text-anchor="middle"
+          font-size="11" fill="#e8ecf4" font-weight="500"
+          font-family="Inter, system-ui, sans-serif">
+      Van departed towards M
     </text>
   </g>
 
@@ -481,42 +509,14 @@ body {
   <!-- Event: STMT_01.E1 -->
   <g class="event-group" data-id="STMT_01.E1" style="cursor:pointer;">
     <!-- Stem -->
-    <line x1="480" y1="420" x2="480" y2="252"
-          stroke="#f59e0b" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
-    <!-- Tick on axis -->
-    <line x1="480" y1="414" x2="480" y2="426"
-          stroke="#f59e0b" stroke-width="2.5" opacity="0.7"/>
-    <!-- Circle -->
-    <circle cx="480" cy="220" r="28" fill="#f59e0b" fill-opacity="0.15"
-            stroke="#f59e0b" stroke-width="2.5"  filter="url(#glow)"
-            class="event-circle"/>
-    <!-- Inner dot -->
-    <circle cx="480" cy="220" r="4" fill="#f59e0b" opacity="0.9"/>
-    <!-- Time label below axis -->
-    <text x="480" y="448" text-anchor="middle"
-          font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
-      07:30
-    </text>
-    <!-- Description label above circle -->
-    <text x="480" y="182" text-anchor="middle"
-          font-size="11" fill="#e8ecf4" font-weight="500"
-          font-family="Inter, system-ui, sans-serif">
-      Ramesh arrives at ware
-    </text>
-  </g>
-
-
-  <!-- Event: STMT_01.E2 -->
-  <g class="event-group" data-id="STMT_01.E2" style="cursor:pointer;">
-    <!-- Stem -->
-    <line x1="660" y1="420" x2="660" y2="181"
+    <line x1="660" y1="420" x2="660" y2="192"
           stroke="#f59e0b" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
     <!-- Tick on axis -->
     <line x1="660" y1="414" x2="660" y2="426"
           stroke="#f59e0b" stroke-width="2.5" opacity="0.7"/>
     <!-- Circle -->
-    <circle cx="660" cy="160" r="17" fill="#f59e0b" fill-opacity="0.15"
-            stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="5 3" filter="url(#glow)"
+    <circle cx="660" cy="160" r="28" fill="#f59e0b" fill-opacity="0.15"
+            stroke="#f59e0b" stroke-width="2.5"  filter="url(#glow)"
             class="event-circle"/>
     <!-- Inner dot -->
     <circle cx="660" cy="160" r="4" fill="#f59e0b" opacity="0.9"/>
@@ -526,52 +526,52 @@ body {
       07:30
     </text>
     <!-- Description label above circle -->
-    <text x="660" y="133" text-anchor="middle"
+    <text x="660" y="122" text-anchor="middle"
           font-size="11" fill="#e8ecf4" font-weight="500"
           font-family="Inter, system-ui, sans-serif">
-      Ramesh discovers cut p
+      Arrived at warehouse t
     </text>
   </g>
 
 
-  <!-- Event: STMT_04.E1 -->
-  <g class="event-group" data-id="STMT_04.E1" style="cursor:pointer;">
+  <!-- Event: STMT_01.E2 -->
+  <g class="event-group" data-id="STMT_01.E2" style="cursor:pointer;">
     <!-- Stem -->
-    <line x1="840" y1="420" x2="840" y2="222"
-          stroke="#10b981" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
+    <line x1="840" y1="420" x2="840" y2="211"
+          stroke="#f59e0b" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
     <!-- Tick on axis -->
     <line x1="840" y1="414" x2="840" y2="426"
-          stroke="#10b981" stroke-width="2.5" opacity="0.7"/>
+          stroke="#f59e0b" stroke-width="2.5" opacity="0.7"/>
     <!-- Circle -->
-    <circle cx="840" cy="190" r="28" fill="#10b981" fill-opacity="0.15"
-            stroke="#10b981" stroke-width="2.5"  filter="url(#glow)"
+    <circle cx="840" cy="190" r="17" fill="#f59e0b" fill-opacity="0.15"
+            stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="5 3" filter="url(#glow)"
             class="event-circle"/>
     <!-- Inner dot -->
-    <circle cx="840" cy="190" r="4" fill="#10b981" opacity="0.9"/>
+    <circle cx="840" cy="190" r="4" fill="#f59e0b" opacity="0.9"/>
     <!-- Time label below axis -->
     <text x="840" y="448" text-anchor="middle"
           font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
       07:30
     </text>
     <!-- Description label above circle -->
-    <text x="840" y="152" text-anchor="middle"
+    <text x="840" y="163" text-anchor="middle"
           font-size="11" fill="#e8ecf4" font-weight="500"
           font-family="Inter, system-ui, sans-serif">
-      Parth walks past wareh
+      Discovered cut padlock
     </text>
   </g>
 
 
-  <!-- Event: STMT_04.E2 -->
-  <g class="event-group" data-id="STMT_04.E2" style="cursor:pointer;">
+  <!-- Event: STMT_05.E1 -->
+  <g class="event-group" data-id="STMT_05.E1" style="cursor:pointer;">
     <!-- Stem -->
-    <line x1="1020" y1="420" x2="1020" y2="241"
+    <line x1="1020" y1="420" x2="1020" y2="252"
           stroke="#10b981" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
     <!-- Tick on axis -->
     <line x1="1020" y1="414" x2="1020" y2="426"
           stroke="#10b981" stroke-width="2.5" opacity="0.7"/>
     <!-- Circle -->
-    <circle cx="1020" cy="220" r="17" fill="#10b981" fill-opacity="0.15"
+    <circle cx="1020" cy="220" r="28" fill="#10b981" fill-opacity="0.15"
             stroke="#10b981" stroke-width="2.5" stroke-dasharray="5 3" filter="url(#glow)"
             class="event-circle"/>
     <!-- Inner dot -->
@@ -582,10 +582,38 @@ body {
       07:30
     </text>
     <!-- Description label above circle -->
-    <text x="1020" y="193" text-anchor="middle"
+    <text x="1020" y="182" text-anchor="middle"
           font-size="11" fill="#e8ecf4" font-weight="500"
           font-family="Inter, system-ui, sans-serif">
-      Person unlocks padlock
+      Observed person unlock
+    </text>
+  </g>
+
+
+  <!-- Event: STMT_05.E2 -->
+  <g class="event-group" data-id="STMT_05.E2" style="cursor:pointer;">
+    <!-- Stem -->
+    <line x1="1200" y1="420" x2="1200" y2="181"
+          stroke="#10b981" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
+    <!-- Tick on axis -->
+    <line x1="1200" y1="414" x2="1200" y2="426"
+          stroke="#10b981" stroke-width="2.5" opacity="0.7"/>
+    <!-- Circle -->
+    <circle cx="1200" cy="160" r="17" fill="#10b981" fill-opacity="0.15"
+            stroke="#10b981" stroke-width="2.5" stroke-dasharray="5 3" filter="url(#glow)"
+            class="event-circle"/>
+    <!-- Inner dot -->
+    <circle cx="1200" cy="160" r="4" fill="#10b981" opacity="0.9"/>
+    <!-- Time label below axis -->
+    <text x="1200" y="448" text-anchor="middle"
+          font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
+      07:30
+    </text>
+    <!-- Description label above circle -->
+    <text x="1200" y="133" text-anchor="middle"
+          font-size="11" fill="#e8ecf4" font-weight="500"
+          font-family="Inter, system-ui, sans-serif">
+      Observed person loadin
     </text>
   </g>
 
@@ -593,55 +621,27 @@ body {
   <!-- Event: STMT_01.E3 -->
   <g class="event-group" data-id="STMT_01.E3" style="cursor:pointer;">
     <!-- Stem -->
-    <line x1="1200" y1="420" x2="1200" y2="181"
+    <line x1="1380" y1="420" x2="1380" y2="211"
           stroke="#f59e0b" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
     <!-- Tick on axis -->
-    <line x1="1200" y1="414" x2="1200" y2="426"
+    <line x1="1380" y1="414" x2="1380" y2="426"
           stroke="#f59e0b" stroke-width="2.5" opacity="0.7"/>
     <!-- Circle -->
-    <circle cx="1200" cy="160" r="17" fill="#f59e0b" fill-opacity="0.15"
+    <circle cx="1380" cy="190" r="17" fill="#f59e0b" fill-opacity="0.15"
             stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="5 3" filter="url(#glow)"
             class="event-circle"/>
     <!-- Inner dot -->
-    <circle cx="1200" cy="160" r="4" fill="#f59e0b" opacity="0.9"/>
-    <!-- Time label below axis -->
-    <text x="1200" y="448" text-anchor="middle"
-          font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
-      07:32
-    </text>
-    <!-- Description label above circle -->
-    <text x="1200" y="133" text-anchor="middle"
-          font-size="11" fill="#e8ecf4" font-weight="500"
-          font-family="Inter, system-ui, sans-serif">
-      Ramesh discovers inven
-    </text>
-  </g>
-
-
-  <!-- Event: STMT_04.E3 -->
-  <g class="event-group" data-id="STMT_04.E3" style="cursor:pointer;">
-    <!-- Stem -->
-    <line x1="1380" y1="420" x2="1380" y2="211"
-          stroke="#10b981" stroke-width="2" opacity="0.45" stroke-dasharray="4 3"/>
-    <!-- Tick on axis -->
-    <line x1="1380" y1="414" x2="1380" y2="426"
-          stroke="#10b981" stroke-width="2.5" opacity="0.7"/>
-    <!-- Circle -->
-    <circle cx="1380" cy="190" r="17" fill="#10b981" fill-opacity="0.15"
-            stroke="#10b981" stroke-width="2.5" stroke-dasharray="5 3" filter="url(#glow)"
-            class="event-circle"/>
-    <!-- Inner dot -->
-    <circle cx="1380" cy="190" r="4" fill="#10b981" opacity="0.9"/>
+    <circle cx="1380" cy="190" r="4" fill="#f59e0b" opacity="0.9"/>
     <!-- Time label below axis -->
     <text x="1380" y="448" text-anchor="middle"
           font-size="11" fill="#8b95a8" font-family="'JetBrains Mono', monospace">
-      07:32
+      07:35
     </text>
     <!-- Description label above circle -->
     <text x="1380" y="163" text-anchor="middle"
           font-size="11" fill="#e8ecf4" font-weight="500"
           font-family="Inter, system-ui, sans-serif">
-      Person shifts items in
+      Discovered torn pallet
     </text>
   </g>
 
@@ -669,7 +669,7 @@ body {
     <text x="1560" y="193" text-anchor="middle"
           font-size="11" fill="#e8ecf4" font-weight="500"
           font-family="Inter, system-ui, sans-serif">
-      Sanjay attends anniver
+      Attended anniversary e
     </text>
   </g>
 
@@ -697,7 +697,7 @@ body {
     <text x="1740" y="133" text-anchor="middle"
           font-size="11" fill="#e8ecf4" font-weight="500"
           font-family="Inter, system-ui, sans-serif">
-      Mohan starts factory g
+      On guard duty at plast
     </text>
   </g>
 
@@ -735,7 +735,7 @@ body {
 
 <script>
 // Tooltip data injected from Python.
-const tooltipData = {"STMT_02.E2": {"speaker": "Mohan Lal", "role": "witness", "description": "Cargo van enters service lane", "time": "01:45 – 01:45", "location": "Service lane leading to Gate 2", "action": "Entered service lane with dimmed headlights", "status": "single_source", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": [], "corroborations": []}, "STMT_02.E3": {"speaker": "Mohan Lal", "role": "witness", "description": "Cargo van departs warehouse area", "time": "02:25 – 02:30", "location": "Towards Mathura Road", "action": "Drove out towards Mathura Road after ~40 mins", "status": "single_source", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": [], "corroborations": []}, "STMT_01.E1": {"speaker": "Ramesh Chandra", "role": "victim", "description": "Ramesh arrives at warehouse", "time": "07:30 – 07:30", "location": "Warehouse", "action": "Arrived to unlock gates for shipments", "status": "corroborated", "in_consistent_set": true, "pagerank": 0.3125, "conflicts": [], "corroborations": ["Both Ramesh and Parth state that someone was at the warehouse gate around 7:30 AM to unlock it for morning shipments."]}, "STMT_01.E2": {"speaker": "Ramesh Chandra", "role": "victim", "description": "Ramesh discovers cut padlock", "time": "07:30 – 07:32", "location": "Gate 2", "action": "Found Gate 2 padlock cut with bolt cutters", "status": "contested", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": ["Ramesh states the padlock on Gate 2 was cut with heavy bolt cutters, whereas Parth claims the person opened all padlocks with keys."], "corroborations": []}, "STMT_04.E1": {"speaker": "Parth", "role": "witness", "description": "Parth walks past warehouse", "time": "07:30 – 07:30", "location": "Warehouse exterior", "action": "Crossed past the warehouse", "status": "corroborated", "in_consistent_set": true, "pagerank": 0.3125, "conflicts": [], "corroborations": ["Both Ramesh and Parth state that someone was at the warehouse gate around 7:30 AM to unlock it for morning shipments."]}, "STMT_04.E2": {"speaker": "Parth", "role": "witness", "description": "Person unlocks padlocks with keys", "time": "07:30 – 07:32", "location": "Warehouse gates", "action": "Opened all padlocks using keys", "status": "contested", "in_consistent_set": false, "pagerank": 0.0469, "conflicts": ["Ramesh states the padlock on Gate 2 was cut with heavy bolt cutters, whereas Parth claims the person opened all padlocks with keys."], "corroborations": []}, "STMT_01.E3": {"speaker": "Ramesh Chandra", "role": "victim", "description": "Ramesh discovers inventory theft", "time": "07:32 – 07:35", "location": "Aisle 4 / Secure cages", "action": "Opened shutter and found missing inventory", "status": "contested", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": ["Ramesh claims he found the warehouse broken into and inventory stolen upon opening, while Parth claims he saw someone routinely shifting things into a truck."], "corroborations": []}, "STMT_04.E3": {"speaker": "Parth", "role": "witness", "description": "Person shifts items into truck", "time": "07:32 – 07:40", "location": "Warehouse gates", "action": "Started shifting items into a truck", "status": "contested", "in_consistent_set": false, "pagerank": 0.0469, "conflicts": ["Ramesh claims he found the warehouse broken into and inventory stolen upon opening, while Parth claims he saw someone routinely shifting things into a truck."], "corroborations": []}, "STMT_03.E1": {"speaker": "Sanjay Bhatia", "role": "suspect", "description": "Sanjay attends anniversary in Faridabad", "time": "20:00 – 04:00", "location": "Cousin's house in Faridabad", "action": "Celebrated a family anniversary", "status": "single_source", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": [], "corroborations": []}, "STMT_02.E1": {"speaker": "Mohan Lal", "role": "witness", "description": "Mohan starts factory gate duty", "time": "23:00 – 07:00", "location": "Adjacent plastic factory gate", "action": "On duty at adjacent plastic factory gate", "status": "single_source", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": [], "corroborations": []}};
+const tooltipData = {"STMT_02.E2": {"speaker": "Mohan Lal", "role": "witness", "description": "Observed white van enter service lane", "time": "01:45 – 01:45", "location": "Service lane to Gate 2", "action": "Spotted cargo van entering lane", "status": "single_source", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": [], "corroborations": []}, "STMT_02.E3": {"speaker": "Mohan Lal", "role": "witness", "description": "Van stayed parked near Gate 2", "time": "01:45 – 02:25", "location": "Service lane to Gate 2", "action": "Parked vehicle for 40 minutes", "status": "single_source", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": [], "corroborations": []}, "STMT_02.E4": {"speaker": "Mohan Lal", "role": "witness", "description": "Van departed towards Mathura Road", "time": "02:30 – 02:30", "location": "Service lane towards Mathura Road", "action": "Drove away", "status": "single_source", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": [], "corroborations": []}, "STMT_01.E1": {"speaker": "Ramesh Chandra", "role": "victim", "description": "Arrived at warehouse to unlock gates", "time": "07:30 – 07:30", "location": "Warehouse", "action": "Arrived at warehouse", "status": "corroborated", "in_consistent_set": true, "pagerank": 0.3125, "conflicts": [], "corroborations": ["Both statements confirm that activity occurred at the warehouse gates around 7:30 AM involving unlocking for morning shipments."]}, "STMT_01.E2": {"speaker": "Ramesh Chandra", "role": "victim", "description": "Discovered cut padlock on Gate 2", "time": "07:30 – 07:35", "location": "Warehouse Gate 2", "action": "Found damaged padlock", "status": "contested", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": ["Ramesh states the padlock on Gate 2 was cut with bolt cutters, whereas Parth claims someone opened all padlocks with keys."], "corroborations": []}, "STMT_05.E1": {"speaker": "Parth", "role": "witness", "description": "Observed person unlocking warehouse gates", "time": "07:30 – 07:30", "location": "Warehouse gate", "action": "Saw gate being unlocked with keys", "status": "contested", "in_consistent_set": false, "pagerank": 0.3125, "conflicts": ["Ramesh states the padlock on Gate 2 was cut with bolt cutters, whereas Parth claims someone opened all padlocks with keys."], "corroborations": ["Both statements confirm that activity occurred at the warehouse gates around 7:30 AM involving unlocking for morning shipments."]}, "STMT_05.E2": {"speaker": "Parth", "role": "witness", "description": "Observed person loading items into truck", "time": "07:30 – 07:45", "location": "Warehouse gate", "action": "Saw items shifted into a truck", "status": "contested", "in_consistent_set": false, "pagerank": 0.0469, "conflicts": ["Ramesh discovered the break-in and missing stock after opening the shutter at 7:30 AM, whereas Parth reports seeing someone loading goods into a truck at 7:30 AM."], "corroborations": []}, "STMT_01.E3": {"speaker": "Ramesh Chandra", "role": "victim", "description": "Discovered torn pallets and missing inventory", "time": "07:35 – 07:40", "location": "Aisle 4, secure cages", "action": "Opened roll-up shutter and discovered loss", "status": "contested", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": ["Ramesh discovered the break-in and missing stock after opening the shutter at 7:30 AM, whereas Parth reports seeing someone loading goods into a truck at 7:30 AM."], "corroborations": []}, "STMT_03.E1": {"speaker": "Sanjay Bhatia", "role": "suspect", "description": "Attended anniversary event in Faridabad", "time": "20:00 – 23:59", "location": "Cousin's house, Faridabad", "action": "Celebrated family anniversary", "status": "single_source", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": [], "corroborations": []}, "STMT_02.E1": {"speaker": "Mohan Lal", "role": "witness", "description": "On guard duty at plastic factory gate", "time": "23:00 – 07:00", "location": "Adjacent plastic factory gate", "action": "Stood guard duty", "status": "single_source", "in_consistent_set": true, "pagerank": 0.0469, "conflicts": [], "corroborations": []}};
 
 const tooltip = document.getElementById('tooltip');
 const groups = document.querySelectorAll('.event-group');
